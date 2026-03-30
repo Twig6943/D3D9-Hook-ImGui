@@ -15,7 +15,7 @@ jobs:
 
       - name: Install CMake
         shell: pwsh
-        run: choco install cmake -y
+        run: choco install directx-sdk cmake -y
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -31,6 +31,8 @@ jobs:
           msbuild "Source\D3D9 Hook ImGui.sln" ^
             /p:Configuration=Release ^
             /p:Platform=x86 ^
+            /p:IncludePath="%DXSDK_DIR%Include;%IncludePath%" ^
+            /p:LibraryPath="%DXSDK_DIR%Lib\x86;%LibraryPath%" ^
             /m
 
       - name: Upload DLL Artifact
