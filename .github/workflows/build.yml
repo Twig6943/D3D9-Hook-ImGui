@@ -28,7 +28,7 @@ jobs:
         shell: cmd
         run: |
           REM Build using MSBuild for Win32 (x86)
-          msbuild "Source\D3D9 Hook ImGui\D3D9 Hook ImGui.sln" ^
+          msbuild "Source\D3D9 Hook ImGui.sln" ^
             /p:Configuration=Release ^
             /p:Platform=Win32 ^
             /m
