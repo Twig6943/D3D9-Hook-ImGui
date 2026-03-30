@@ -13,23 +13,28 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Chocolatey Packages
+      - name: Install CMake
         shell: pwsh
-        run: |
-          choco install cmake -y
+        run: choco install cmake -y
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Build Solution
+      - name: Check Solution File
+        shell: cmd
+        run: dir "Source\D3D9 Hook ImGui"
+
+      - name: Build Solution x86
         shell: cmd
         run: |
-          REM Use preinstalled Visual Studio 2022 environment for x86
-          call "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-          msbuild "Source\D3D9 Hook ImGui\D3D9 Hook ImGui.sln" /p:Configuration=Release /p:Platform=Win32
+          REM Build using MSBuild for Win32 (x86)
+          msbuild "Source\D3D9 Hook ImGui\D3D9 Hook ImGui.sln" ^
+            /p:Configuration=Release ^
+            /p:Platform=Win32 ^
+            /m
 
       - name: Upload DLL Artifact
         uses: actions/upload-artifact@v6
         with:
           name: DLL
-          path: Source/D3D9 Hook ImGui/Release/D3D9 Hook ImGui.dll
+          path: "Source/D3D9 Hook ImGui/Release/D3D9 Hook ImGui.dll"
