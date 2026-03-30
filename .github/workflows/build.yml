@@ -7,11 +7,11 @@ jobs:
   build:
     runs-on: windows-latest
 
-steps:
-  - name: Checkout Repository
-    uses: actions/checkout@v6
-    with:
-      submodules: recursive
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
 
       - name: Install Visual Studio Build Tools
         shell: pwsh
