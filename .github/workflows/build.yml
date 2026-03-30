@@ -30,7 +30,7 @@ jobs:
           REM Build using MSBuild for Win32 (x86)
           msbuild "Source\D3D9 Hook ImGui.sln" ^
             /p:Configuration=Release ^
-            /p:Platform=Win32 ^
+            /p:Platform=x86 ^
             /m
 
       - name: Upload DLL Artifact
