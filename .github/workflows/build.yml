@@ -1,4 +1,4 @@
-name: Build DLL
+name: Build DLL x86
 
 on:
   workflow_dispatch:
@@ -21,20 +21,14 @@ jobs:
             -y
           choco install cmake -y
 
-      - name: Build
+      - name: Build Solution
         shell: cmd
         run: |
-          call "%ProgramFiles(x86)%\Microsoft Visual Studio\2026\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          cd DLL
-          mkdir build
-          cd build
-          cmake .. -G "Visual Studio 18 2026"
-          cmake --build . --config Release
-          dir
+          call "%ProgramFiles(x86)%\Microsoft Visual Studio\2026\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
+          msbuild "Source\D3D9 Hook ImGui\D3D9 Hook ImGui.sln" /p:Configuration=Release /p:Platform=Win32
 
       - name: Upload artifact/s
         uses: actions/upload-artifact@v6
         with:
           name: DLL
-          path: |
-            Source/D3D9 Hook ImGui/Release/D3D9 Hook ImGui.dll
+          path: Source/D3D9 Hook ImGui/Release/D3D9 Hook ImGui.dll
