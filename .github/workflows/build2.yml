@@ -1,0 +1,32 @@
+name: Build DLL x86
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Setup MSBuild Environment
+        shell: cmd
+        run: |
+          REM Find the latest VS installation
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -property installationPath') do set VS_PATH=%%i
+          call "%VS_PATH%\VC\Auxiliary\Build\vcvarsall.bat" x86
+
+      - name: Build Solution
+        shell: cmd
+        run: |
+          msbuild "Source\D3D9 Hook ImGui\D3D9 Hook ImGui.sln" /p:Configuration=Release /p:Platform=Win32
+
+      - name: Upload DLL
+        uses: actions/upload-artifact@v6
+        with:
+          name: DLL
+          path: Source/D3D9 Hook ImGui/Release/D3D9 Hook ImGui.dll
