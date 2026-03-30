@@ -13,21 +13,22 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Visual Studio Build Tools
+      - name: Install Chocolatey Packages
         shell: pwsh
         run: |
-          choco install visualstudio2026buildtools `
-            --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended" `
-            -y
           choco install cmake -y
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build Solution
         shell: cmd
         run: |
-          call "%ProgramFiles(x86)%\Microsoft Visual Studio\2026\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
+          REM Use preinstalled Visual Studio 2022 environment for x86
+          call "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
           msbuild "Source\D3D9 Hook ImGui\D3D9 Hook ImGui.sln" /p:Configuration=Release /p:Platform=Win32
 
-      - name: Upload artifact/s
+      - name: Upload DLL Artifact
         uses: actions/upload-artifact@v6
         with:
           name: DLL
