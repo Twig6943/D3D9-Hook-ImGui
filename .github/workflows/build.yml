@@ -37,4 +37,4 @@ steps:
         with:
           name: DLL
           path: |
-            Source/D3D9 Hook ImGui/Release/dinput8.dll
+            Source/D3D9 Hook ImGui/Release/D3D9 Hook ImGui.dll
